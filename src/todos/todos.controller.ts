@@ -2,42 +2,39 @@ import { Body, Controller, Delete, Get, Headers, HttpCode, Param, ParseIntPipe, 
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { QueryParamsDto } from './dto/query-params.dto';
+import { TodosService } from './todos.service';
 
 @Controller('todos')
 export class TodosController {
+    private todosService: TodosService;
+
+    constructor() {
+        this.todosService = new TodosService();
+    }
+
     @Get()
     findAll(@Query() queryParams: QueryParamsDto) {
-        const { page, limit, priority } = queryParams;
-        if (priority) {
-            return `All todos with priority: ${priority}, limit: ${limit}, page: ${page}`;
-        }
-        return "All todos"
+        return this.todosService.findAll(queryParams);
     }
 
     @Get(':id')
     findOne(@Param('id', ParseIntPipe) id: number) {
-        return `Todo with ID: ${id}`
+        return this.todosService.findOne(id);
     }
 
-    @Post(':id')
-    create(@Param('id', ParseIntPipe) id: number, @Body() createTodoDto: CreateTodoDto, @Headers() headers: Record<string, string>) {
-        const auth = headers['authorization'];
-        const userAgent = headers['user-agent'];
-        if (auth) {
-            return `Create a todo with ID: ${id} and body: ${JSON.stringify(createTodoDto)} and user-agent: ${userAgent}`;
-        }
-
-        return "Unauthorized"
+    @Post()
+    create(@Body() createTodoDto: CreateTodoDto, @Headers() headers: Record<string, string>) {
+        return this.todosService.create(createTodoDto);
     }
 
     @Patch(':id')
     update(@Param('id', ParseIntPipe) id: number, @Body() updateTodoDto: UpdateTodoDto) {
-        return `Update a todo with ID: ${id} and body: ${JSON.stringify(updateTodoDto)}`
+        return this.todosService.update(id, updateTodoDto);
     }
 
     @Delete(':id')
     @HttpCode(204)
     remove(@Param('id', ParseIntPipe) id: number) {
-        return `Delete a todo with ID: ${id}`
+        return this.todosService.delete(id);
     }
 }

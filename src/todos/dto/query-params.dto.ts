@@ -12,5 +12,5 @@ export class QueryParamsDto {
     limit?: number = 10;
     @IsOptional()
     @IsEnum(TodoPriority, { message: `Priority must be one of the following: ${Object.values(TodoPriority).join(', ')}` })
-    priority?: TodoPriority = TodoPriority.MEDIUM;
+    priority?: TodoPriority;
 }

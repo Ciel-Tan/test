@@ -1,0 +1,32 @@
+﻿[
+  {
+    "id": 1,
+    "title": "Hoàn thành báo cáo",
+    "description": "Viết và nộp báo cáo công việc tuần này.",
+    "status": "OPEN",
+    "priority": "HIGH",
+    "categoryId": 1,
+    "createdAt": "2026-06-11T08:00:00.000Z",
+    "updatedAt": "2026-06-11T08:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "title": "Họp nhóm",
+    "description": "Chuẩn bị nội dung và tham dự cuộc họp dự án.",
+    "status": "IN_PROGRESS",
+    "priority": "MEDIUM",
+    "categoryId": 2,
+    "createdAt": "2026-06-11T09:00:00.000Z",
+    "updatedAt": "2026-06-11T09:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "title": "Kiểm tra mã",
+    "description": "Review và merge pull request trên GitHub.",
+    "status": "DONE",
+    "priority": "LOW",
+    "categoryId": 1,
+    "createdAt": "2026-06-11T10:00:00.000Z",
+    "updatedAt": "2026-06-11T10:30:00.000Z"
+  }
+]

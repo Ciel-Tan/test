@@ -1,5 +1,5 @@
-import { TodoPriority } from "../todos/enums/todo-priority.enum";
-import { TodoStatus } from "../todos/enums/todo-status.enum";
+import { TodoPriority } from "../enums/todo-priority.enum";
+import { TodoStatus } from "../enums/todo-status.enum";
 
 export class Todo {
     id!: number;
@@ -7,6 +7,7 @@ export class Todo {
     description!: string;
     status!: TodoStatus;
     priority!: TodoPriority;
+    userId!: number;
     categoryId?: number;
     createdAt!: Date;
     updatedAt!: Date;

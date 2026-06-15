@@ -1,12 +1,19 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { QueryParamsDto } from "./dto/query-params.dto";
 import { UpdateTodoDto } from "./dto/update-todo.dto";
 import { TodosRepository } from "./todos.repository";
+import { CategoriesService } from "../categories/categories.service";
+import { UsersService } from "../users/users.service";
+import { TodoNotFoundException } from "./exceptions/todo-not-found.exception";
 
 @Injectable()
 export class TodosService {
-    constructor(private readonly todosRepository: TodosRepository) {}
+    constructor(
+        private readonly todosRepository: TodosRepository,
+        private readonly categoriesService: CategoriesService,
+        private readonly usersService: UsersService,
+    ) {}
 
     findAll(queryParams: QueryParamsDto) {
         let todos = this.todosRepository.findAll();
@@ -27,13 +34,30 @@ export class TodosService {
         const todo = this.todosRepository.findOne(id);
 
         if (!todo) {
-            throw new Error(`Todo with ID ${id} not found`);
+            throw new TodoNotFoundException(id);
         }
 
         return todo;
     }
 
     create(createTodoDto: CreateTodoDto) {
+        const user = this.usersService.findById(createTodoDto.userId);
+        if (!user) {
+            throw new TodoNotFoundException(createTodoDto.userId);
+        }
+
+        if (createTodoDto.categoryId) {
+            const category = this.categoriesService.findOne(createTodoDto.categoryId);
+            if (!category) {
+                throw new NotFoundException(`Category with ID ${createTodoDto.categoryId} not found`);
+            }
+        }
+
+        const existingTodo = this.todosRepository.findByTitle(createTodoDto.title);
+        if (existingTodo) {
+            throw new BadRequestException(`Todo with title "${createTodoDto.title}" already exists`);
+        }
+
         const todo = this.todosRepository.create(createTodoDto);
         return todo;
     }
@@ -42,7 +66,7 @@ export class TodosService {
         const updatedTodo = this.todosRepository.update(id, updateTodoDto);
 
         if (!updatedTodo) {
-            throw new Error(`Todo with ID ${id} not found`);
+            throw new NotFoundException(`Todo with ID ${id} not found`);
         }
 
         return updatedTodo;
@@ -52,7 +76,7 @@ export class TodosService {
         const success = this.todosRepository.delete(id);
 
         if (!success) {
-            throw new Error(`Todo with ID ${id} not found`);
+            throw new TodoNotFoundException(id);
         }
     }
 }

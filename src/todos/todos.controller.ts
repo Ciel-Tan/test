@@ -6,11 +6,7 @@ import { TodosService } from './todos.service';
 
 @Controller('todos')
 export class TodosController {
-    private todosService: TodosService;
-
-    constructor() {
-        this.todosService = new TodosService();
-    }
+    constructor(private readonly todosService: TodosService) {}
 
     @Get()
     findAll(@Query() queryParams: QueryParamsDto) {

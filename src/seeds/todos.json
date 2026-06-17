@@ -5,6 +5,7 @@
     "description": "Viết và nộp báo cáo công việc tuần này.",
     "status": "OPEN",
     "priority": "HIGH",
+    "userId": 1,
     "categoryId": 1,
     "createdAt": "2026-06-11T08:00:00.000Z",
     "updatedAt": "2026-06-11T08:00:00.000Z"
@@ -15,6 +16,7 @@
     "description": "Chuẩn bị nội dung và tham dự cuộc họp dự án.",
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
+    "userId": 2,
     "categoryId": 2,
     "createdAt": "2026-06-11T09:00:00.000Z",
     "updatedAt": "2026-06-11T09:00:00.000Z"
@@ -25,6 +27,7 @@
     "description": "Review và merge pull request trên GitHub.",
     "status": "DONE",
     "priority": "LOW",
+    "userId": 3,
     "categoryId": 1,
     "createdAt": "2026-06-11T10:00:00.000Z",
     "updatedAt": "2026-06-11T10:30:00.000Z"

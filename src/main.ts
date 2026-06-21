@@ -1,10 +1,18 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { RequestMiddleware } from './common/middlewares/request-id.middleware';
+import { AuthGuard } from './common/guards/auth.guard';
+import { TimingInterceptor } from './common/interceptors/timing.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const requestMiddleware = new RequestMiddleware()
+  app.use((req, res, next) => requestMiddleware.use(req, res, next));
+
+  app.useGlobalGuards(new AuthGuard());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -13,6 +21,8 @@ async function bootstrap() {
       transform: true,
       transformOptions: { enableImplicitConversion: true },
     }))
+
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   app.useGlobalFilters(new HttpExceptionFilter());
   

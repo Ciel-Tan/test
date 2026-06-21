@@ -2,14 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
-  private categories: Category[] = [
-    { id: 1, name: 'Work' },
-    { id: 2, name: 'Personal' },
-    { id: 3, name: 'Home' },
-  ];
+  constructor(
+    @InjectRepository(Category)
+    private readonly categoriesRepositpry: Repository<Category>,
+  ) {}
 
   create(createCategoryDto: CreateCategoryDto) {
     return 'This action adds a new category';
@@ -19,8 +20,8 @@ export class CategoriesService {
     return `This action returns all categories`;
   }
 
-  findOne(id: number) {
-    return this.categories.find(category => category.id === id) || null;
+  async findOne(id: number) {
+    return await this.categoriesRepositpry.findOne({ where: { id } });
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {

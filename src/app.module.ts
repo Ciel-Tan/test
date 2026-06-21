@@ -26,7 +26,8 @@ import { Category } from "./categories/entities/category.entity";
             password: process.env.DB_PASSWORD,
             database: process.env.DB_NAME,
             entities: [Todo, User, Category],
-            synchronize: true,
+            synchronize: process.env.NODE_ENV !== 'production',
+            logging: true
         })
     ],
 })

@@ -28,7 +28,7 @@ import { RequestMiddleware } from "./common/middlewares/request-id.middleware";
             database: process.env.DB_NAME,
             entities: [Todo, User, Category],
             synchronize: process.env.NODE_ENV !== 'production',
-            logging: true
+            // logging: true
         })
     ],
 })
